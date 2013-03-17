@@ -12,7 +12,6 @@ class ShipService {
     int getTotalBonusToHit(Ship ship) {
         int totalBonusToHit = ship.bonusToHit
         ship.partList.each { part ->
-            logger.debug("")
             totalBonusToHit += part.bonusToHit
         }
         return totalBonusToHit
