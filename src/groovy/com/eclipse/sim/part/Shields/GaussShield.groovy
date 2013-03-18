@@ -6,5 +6,6 @@ import com.eclipse.sim.part.ShipPart
 class GaussShield extends ShipPart {
     GaussShield() {
         this.modifierToAttacker = -1
+        this.techRequired = true
     }
 }

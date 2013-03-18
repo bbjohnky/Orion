@@ -11,6 +11,8 @@ import com.eclipse.sim.part.ShipPart
 import com.eclipse.sim.part.Sources.TachyonSource
 import com.eclipse.sim.part.Sources.NuclearSource
 import com.eclipse.sim.part.Drives.NuclearDrive
+import com.eclipse.sim.part.Cannons.IonCannon
+import com.eclipse.sim.part.Cannons.PlasmaCannon
 
 @TestFor (ShipService)
 class ShipServiceTests {
@@ -112,5 +114,15 @@ class ShipServiceTests {
         ship = shipService.assignDamage(ship,4)
 
         assert shipService.shipDestroyed(ship)
+    }
+
+    void test_getTotalTechRequired() {
+        ship = shipService.addOrReplacePartToShip(ship,TachyonSource,NuclearSource)
+        ship = shipService.addOrReplacePartToShip(ship,PlasmaCannon)
+        ship = shipService.addOrReplacePartToShip(ship,PlasmaCannon,IonCannon)
+
+        def totalNumberOfTechs = shipService.getNumberOfTechRequired(ship)
+        shipService.printShipPartsForShip(ship)
+        assert totalNumberOfTechs.equals(2)
     }
 }

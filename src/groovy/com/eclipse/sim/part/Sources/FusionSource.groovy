@@ -6,5 +6,6 @@ import com.eclipse.sim.part.ShipPart
 class FusionSource extends ShipPart {
     FusionSource() {
         this.powerModifier = 6
+        this.techRequired = true
     }
 }

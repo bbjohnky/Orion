@@ -8,5 +8,6 @@ class TachyonDrive extends ShipPart {
         this.moveBonus = 3
         this.initiativeBonus = 3
         this.powerModifier = -3
+        this.techRequired = true
     }
 }

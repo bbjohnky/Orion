@@ -8,5 +8,6 @@ class PositronComputer extends ShipPart {
         this.bonusToHit = 2
         this.initiativeBonus = 1
         this.powerModifier = -1
+        this.techRequired = true
     }
 }

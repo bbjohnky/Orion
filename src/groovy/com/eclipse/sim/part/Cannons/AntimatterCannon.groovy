@@ -7,5 +7,6 @@ class AntimatterCannon extends ShipPart {
     AntimatterCannon() {
         this.damagePerShot = 4
         this.powerModifier = -4
+        this.techRequired = true
     }
 }

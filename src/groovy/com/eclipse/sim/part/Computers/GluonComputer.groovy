@@ -8,5 +8,6 @@ class GluonComputer extends ShipPart {
         this.bonusToHit = 3
         this.initiativeBonus = 2
         this.powerModifier = -2
+        this.techRequired = true
     }
 }

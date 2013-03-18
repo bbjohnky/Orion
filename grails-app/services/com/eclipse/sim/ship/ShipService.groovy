@@ -25,6 +25,17 @@ class ShipService {
         return totalInitiativeBonus
     }
 
+    int getNumberOfTechRequired(Ship ship) {
+        def techsRequired = []
+        ship.partList.each { part ->
+            if(part.techRequired) {
+                techsRequired.add(part.getClass().toString())
+            }
+        }
+        techsRequired.unique()
+        return techsRequired.size()
+    }
+
     boolean shipDesignIsValid(Ship ship) {
          return shipPowerIsValid(ship) && shipPartSizeIsValid(ship) && shipHasValidNumberOfDrives(ship)
     }
@@ -70,7 +81,9 @@ class ShipService {
         }
         else {
             logger.debug("Adding {} to {} would result in invalid ship design.",newPart.getName(), ship)
-            return addOrReplacePartToShip(ship, partToReplace, newPart)
+            ship = removePartFromShip(ship,newPart)
+            ship = addPartToShip(ship,partToReplace)
+            return ship
         }
     }
 
@@ -111,5 +124,12 @@ class ShipService {
     Ship assignDamage(Ship ship, int damage) {
         ship.damageTaken += damage
         return ship
+    }
+
+    void printShipPartsForShip(Ship ship) {
+        logger.info("Printing ship parts for {}",ship.getClass())
+        ship.partList.each {part ->
+            logger.info("Part: {}",part.getClass())
+        }
     }
 }

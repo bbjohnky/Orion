@@ -8,5 +8,6 @@ class PlasmaMissiles extends ShipPart {
         this.damagePerShot = 2
         this.numberOfShots = 2
         this.preemptiveAttack = true
+        this.techRequired = true
     }
 }

@@ -7,5 +7,6 @@ class PhaseShield extends ShipPart {
     PhaseShield() {
         this.modifierToAttacker = -2
         this.powerModifier = -1
+        this.techRequired = true
     }
 }
