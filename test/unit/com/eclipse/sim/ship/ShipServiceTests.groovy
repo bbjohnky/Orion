@@ -2,8 +2,6 @@ package com.eclipse.sim.ship
 
 import grails.test.mixin.TestFor
 import com.eclipse.sim.Blueprints.Ship
-import com.eclipse.sim.Blueprints.Human.Cruiser
-import com.eclipse.sim.part.Computers.GluonComputer
 import com.eclipse.sim.part.Hulls.ImprovedHull
 import com.eclipse.sim.part.Hulls.Hull
 import com.eclipse.sim.part.Cannons.AntimatterCannon
@@ -13,14 +11,22 @@ import com.eclipse.sim.part.Sources.NuclearSource
 import com.eclipse.sim.part.Drives.NuclearDrive
 import com.eclipse.sim.part.Cannons.IonCannon
 import com.eclipse.sim.part.Cannons.PlasmaCannon
+import com.eclipse.sim.part.Shields.GaussShield
+import grails.test.mixin.Mock
+import com.eclipse.sim.part.Computers.ElectronComputer
+import com.eclipse.sim.factory.HumanShipFactory
 
 @TestFor (ShipService)
+@Mock([Ship, ShipPart, ElectronComputer,
+        IonCannon, Hull, NuclearDrive, NuclearSource,
+        ImprovedHull, TachyonSource, AntimatterCannon,
+        PlasmaCannon])
 class ShipServiceTests {
     def shipService
     def ship
 
     void setUp() {
-        ship = new Cruiser()
+        ship = HumanShipFactory.cruiser
         shipService = new ShipService()
     }
 
@@ -28,6 +34,14 @@ class ShipServiceTests {
         def totalBonus = shipService.getTotalBonusToHit(ship)
 
         assert totalBonus.equals(1)
+    }
+
+    void test_getTotalShipShield() {
+        ship.partList.add(new GaussShield())
+
+        def shield = shipService.getShipShields(ship)
+
+        assert shield.equals(-1)
     }
 
     void test_getTotalInitiativeBonus() {
@@ -66,7 +80,7 @@ class ShipServiceTests {
         assert part instanceof ImprovedHull
         assert ship.partList.contains(part)
         assert ship.partList.size().equals(6)
-        assert ship instanceof Cruiser
+        assert ship instanceof Ship
     }
 
     void test_addPartOnShip_invalid() {
@@ -84,7 +98,7 @@ class ShipServiceTests {
         assert part instanceof TachyonSource
         assert ship.partList.contains(part)
         assert ship.partList.size().equals(5)
-        assert ship instanceof Cruiser
+        assert ship instanceof Ship
     }
 
     void test_replacePartOnShip_invalid() {
@@ -99,7 +113,7 @@ class ShipServiceTests {
         assert part instanceof NuclearDrive
         assert ship.partList.contains(part)
         assert ship.partList.size().equals(5)
-        assert ship instanceof Cruiser
+        assert ship instanceof Ship
     }
 
     void test_shipDestroyed_should_be_false() {

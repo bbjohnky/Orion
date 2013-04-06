@@ -36,6 +36,14 @@ class ShipService {
         return techsRequired.size()
     }
 
+    int getShipShields(Ship ship) {
+        int shield = 0
+        ship.partList.each { part ->
+            shield += part.modifierToAttacker
+        }
+        return shield
+    }
+
     boolean shipDesignIsValid(Ship ship) {
          return shipPowerIsValid(ship) && shipPartSizeIsValid(ship) && shipHasValidNumberOfDrives(ship)
     }
@@ -77,12 +85,22 @@ class ShipService {
 
         if(shipDesignIsValid(ship)) {
             logger.debug("Added {} to {}",newPart, ship)
+            if (ship.validate()) {
+                ship.save(flush: true, failOnErrors: true)
+            }
+            else {
+                ship.errors.allErrors.each {
+                    logger.debug("{}", it)
+                }
+            }
+
             return ship
         }
         else {
             logger.debug("Adding {} to {} would result in invalid ship design.",newPart.getName(), ship)
             ship = removePartFromShip(ship,newPart)
             ship = addPartToShip(ship,partToReplace)
+            ship.save(flush: true)
             return ship
         }
     }
@@ -111,7 +129,7 @@ class ShipService {
     }
 
     ShipPart getPartFromShip(Ship ship, Class partClass) {
-        ShipPart partToReturn
+        ShipPart partToReturn = null
         ship.partList.each {part ->
             if(part.class.equals(partClass)) {
                 logger.debug("Found {} on ship", partClass.getName())
@@ -123,6 +141,7 @@ class ShipService {
 
     Ship assignDamage(Ship ship, int damage) {
         ship.damageTaken += damage
+        ship.save(flush: true)
         return ship
     }
 

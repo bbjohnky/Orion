@@ -1,6 +1,8 @@
 package com.eclipse.sim.part
 
-class ShipPart {
+import com.eclipse.sim.Blueprints.Ship
+
+abstract class ShipPart {
     int powerModifier = 0
     int moveBonus = 0
     int damagePerShot = 0
@@ -11,5 +13,7 @@ class ShipPart {
     int initiativeBonus = 0
     boolean preemptiveAttack = false
     boolean techRequired = false
+
+    static belongsTo = [ship: Ship]
 }
 
